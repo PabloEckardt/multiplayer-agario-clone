@@ -12,8 +12,14 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # self.client.settimeout(10.0)
-        self.host = "192.168.0.187"
-        self.port = 5555
+
+        # Add manually
+        self.host = ""
+
+        # use this line if running server locally & if server is at that address
+        # self.host = "10.0.0.5"
+
+        self.port = 3000
         self.addr = (self.host, self.port)
 
     def connect(self, name):
@@ -47,12 +53,14 @@ class Network:
                 self.client.send(pickle.dumps(data))
             else:
                 self.client.send(str.encode(data))
-            reply = self.client.recv(2048 * 4)
+            reply = self.client.recv(2048 * 2)
             try:
                 reply = pickle.loads(reply)
             except Exception as e:
-                print(e)
+                # print(e)
+                return [] # what can we return instead, if this exception happened, we failed to retrieve data
 
             return reply
-        except socket.error as e:
-            print(e)
+        except Exception as e:
+            # print(e)
+            return [] # what can we return instead, if this exception happened, we failed to retrieve data

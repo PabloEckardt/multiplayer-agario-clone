@@ -143,22 +143,25 @@ def main(name):
 
         data = "move " + str(player["x"]) + " " + str(player["y"])
 
-        # send data to server and recieve back all players information
-        balls, players, game_time = server.send(data)
-
-        for event in pygame.event.get():
-            # if user hits red x button close window
-            if event.type == pygame.QUIT:
-                run = False
-
-            if event.type == pygame.KEYDOWN:
-                # if user hits a escape key close program
-                if event.key == pygame.K_ESCAPE:
+        # do not let program half on failure to retrieve response
+        response = server.send(response)
+        if len(response) == 3:
+            balls = response[0]
+            players = response[1]
+            game_time = response[2]
+            for event in pygame.event.get():
+                # if user hits red x button close window
+                if event.type == pygame.QUIT:
                     run = False
 
-        # redraw window then update the frame
-        redraw_window(players, balls, game_time, player["score"])
-        pygame.display.update()
+                if event.type == pygame.KEYDOWN:
+                    # if user hits a escape key close program
+                    if event.key == pygame.K_ESCAPE:
+                        run = False
+
+            # redraw window then update the frame
+            redraw_window(players, balls, game_time, player["score"])
+            pygame.display.update()  # maybe can get this out of if statement?
 
     server.disconnect()
     pygame.quit()

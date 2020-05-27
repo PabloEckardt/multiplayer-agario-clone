@@ -16,7 +16,7 @@ S = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 S.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # Set constants
-PORT = 5555
+PORT = 3000
 
 BALL_RADIUS = 5
 START_RADIUS = 7
@@ -27,8 +27,12 @@ MASS_LOSS_TIME = 7
 
 W, H = 1600, 830
 
-HOST_NAME = socket.gethostname()
-SERVER_IP = socket.gethostbyname(HOST_NAME)
+# server ip is not correctly being defined by these calls
+# HOST_NAME = socket.gethostname()
+# SERVER_IP = socket.gethostbyname(HOST_NAME)
+
+# I have set a static ip for this raspberry pi in my network
+SERVER_IP = '10.0.0.4'
 
 # try to connect to server
 try:
@@ -47,9 +51,13 @@ players = {}
 balls = []
 connections = 0
 _id = 0
-colors = [(255, 0, 0), (255, 128, 0), (255, 255, 0), (128, 255, 0), (0, 255, 0), (0, 255, 128), (0, 255, 255),
-          (0, 128, 255), (0, 0, 255), (0, 0, 255), (128, 0, 255), (255, 0, 255), (255, 0, 128), (128, 128, 128),
-          (0, 0, 0)]
+
+colors = [(255, 0, 0), (255, 128, 0), (255, 255, 0),
+          (128, 255, 0), (0, 255, 0), (0, 255, 128),
+          (0, 255, 255), (0, 128, 255), (0, 0, 255),
+          (0, 0, 255), (128, 0, 255), (255, 0, 255),
+          (255, 0, 128), (128, 128, 128), (0, 0, 0)]
+
 start = False
 stat_time = 0
 game_time = "Starting Soon"
